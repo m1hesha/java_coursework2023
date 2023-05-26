@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class NetworkMonitoringApp {
@@ -21,12 +22,15 @@ public class NetworkMonitoringApp {
     private static Properties loadConfiguration() {
         Properties config = new Properties();
         try {
-            config.load(NetworkMonitoringApp.class.getClassLoader().getResourceAsStream(CONFIG_FILE));
+            InputStream inputStream = NetworkMonitoringApp.class.getResourceAsStream("/resources/config.properties");
+            config.load(inputStream);
         } catch (IOException e) {
             System.err.println("Ошибка при загрузке конфигурационного файла: " + e.getMessage());
         }
         return config;
     }
+
+
 
     private static void startMonitoring(int interval, boolean trackNetworkLoad, boolean trackCPUUsage,
                                         boolean trackMemoryUsage, boolean trackDiskUsage, boolean trackDNSDelay) {
