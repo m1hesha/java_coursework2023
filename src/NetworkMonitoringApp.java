@@ -56,7 +56,7 @@ public class NetworkMonitoringApp {
             }
 
             try {
-                Thread.sleep(interval * 1000);
+                Thread.sleep(interval * 10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -65,7 +65,7 @@ public class NetworkMonitoringApp {
 
     private static void trackNetworkLoad() {
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("ifconfig");
+            ProcessBuilder processBuilder = new ProcessBuilder("ip", "addr");
             Process process = processBuilder.start();
             String output = readProcessOutput(process);
             System.out.println("Отслеживание нагрузки на сетевые интерфейсы:\n" + output);
@@ -76,7 +76,7 @@ public class NetworkMonitoringApp {
 
     private static void trackCPUUsage() {
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("mpstat");
+            ProcessBuilder processBuilder = new ProcessBuilder("/bin/sh", "-c", "top -b -1 -n 1 -w 200");
             Process process = processBuilder.start();
             String output = readProcessOutput(process);
             System.out.println("Отслеживание загрузки потоков процессора:\n" + output);
@@ -100,7 +100,7 @@ public class NetworkMonitoringApp {
 
     private static void trackDiskUsage() {
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("df");
+            ProcessBuilder processBuilder = new ProcessBuilder("/bin/sh","-c", "df");
             Process process = processBuilder.start();
             String output = readProcessOutput(process);
             System.out.println("Отслеживание заполнения диска:\n" + output);
